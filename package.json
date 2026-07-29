@@ -1,0 +1,22 @@
+{
+  "name": "drp-holidays",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch dev.ts",
+    "start": "node dev.ts"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.4.0",
+    "cheerio": "^1.0.0",
+    "hono": "^4.6.0",
+    "postgres": "^3.4.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@hono/node-server": "^1.13.0",
+    "dotenv": "^16.4.0",
+    "tsx": "^4.19.0"
+  }
+}
