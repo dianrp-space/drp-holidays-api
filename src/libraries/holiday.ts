@@ -72,9 +72,9 @@ const getHolidayYearly = async (year: string): Promise<Holiday[]> => {
   return data
 }
 
-const getData = (year: string): Promise<Holiday[]> => {
+const getData = async (year: string): Promise<Holiday[]> => {
   try {
-    return crawler(year)
+    return await crawler(year)
   } catch {
     return []
   }
