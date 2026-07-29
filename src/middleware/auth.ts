@@ -1,7 +1,7 @@
 import { HTTPException } from 'hono/http-exception'
 import type { Context, Next } from 'hono'
 
-const skipAuth = ['/health', '/']
+const skipAuth = ['/api/health', '/api/', '/api']
 
 export async function auth(c: Context, next: Next) {
   if (skipAuth.includes(c.req.path)) return next()
