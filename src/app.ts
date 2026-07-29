@@ -20,13 +20,17 @@ try {
   landingHtml = readFileSync(resolve(process.cwd(), 'public', 'index.html'), 'utf-8')
 }
 
-const app = new Hono().basePath('/api')
+const app = new Hono()
 
-app.use('*', logger())
-app.use('*', cors({ origin: '*', allowMethods: ['GET'] }))
-app.use('*', auth)
+app.get('/', (c: Context) => c.html(landingHtml))
 
-app.get(
+const api = new Hono()
+
+api.use('*', logger())
+api.use('*', cors({ origin: '*', allowMethods: ['GET'] }))
+api.use('*', auth)
+
+api.get(
   '/',
   zValidator('query', dateSchema),
   async (c: Context) => {
@@ -46,21 +50,14 @@ app.get(
   },
 )
 
-app.get(
+api.get(
   '/health',
   (c: Context) => {
     return c.json({ status: 'ok' })
   },
 )
 
-app.get(
-  '/page',
-  (c: Context) => {
-    return c.html(landingHtml)
-  },
-)
-
-app.get(
+api.get(
   '/thisyear',
   async (c: Context) => {
     const year = new Date().getFullYear().toString()
@@ -70,7 +67,7 @@ app.get(
   },
 )
 
-app.get(
+api.get(
   '/today',
   async (c: Context) => {
     return c.json(
@@ -79,7 +76,7 @@ app.get(
   },
 )
 
-app.get(
+api.get(
   '/tomorrow',
   async (c: Context) => {
     const date = new Date()
@@ -90,6 +87,21 @@ app.get(
     )
   },
 )
+
+api.onError((err: Error, c: Context) => {
+  if (err instanceof HTTPException) {
+    return c.json({
+      message: err.message,
+      errors: err.cause,
+    }, err.status)
+  }
+
+  return c.json({
+    message: err.message,
+  }, 500)
+})
+
+app.route('/api', api)
 
 app.onError((err: Error, c: Context) => {
   if (err instanceof HTTPException) {
