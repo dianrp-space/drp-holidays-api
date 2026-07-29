@@ -34,7 +34,7 @@ export async function getHolidaysByYear(year: number) {
     const rows = await sql`
       SELECT date, name FROM ${sql(tableName(year))} ORDER BY date
     `
-    return rows as { date: string; name: string }[]
+    return rows as unknown as { date: string; name: string }[]
   } catch (e) {
     console.error('[DB] query error:', e)
     return []
