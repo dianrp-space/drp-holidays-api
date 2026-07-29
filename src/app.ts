@@ -6,7 +6,6 @@ import { zValidator } from './middleware/zod.js'
 import { dateSchema } from './schema/date_schema.js'
 import { getHoliday, getHolidayDate } from './libraries/holiday.js'
 import { auth } from './middleware/auth.js'
-import { landingPage } from './landing.js'
 
 const app = new Hono().basePath('/api')
 
@@ -14,10 +13,8 @@ app.use('*', logger())
 app.use('*', cors({ origin: '*', allowMethods: ['GET'] }))
 app.use('*', auth)
 
-app.get('/', landingPage)
-
 app.get(
-  '/data',
+  '/',
   zValidator('query', dateSchema),
   async (c: Context) => {
     const year = c.req.query('year') || new Date().getFullYear().toString()
