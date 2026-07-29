@@ -6,6 +6,19 @@ import { zValidator } from './middleware/zod.js'
 import { dateSchema } from './schema/date_schema.js'
 import { getHoliday, getHolidayDate } from './libraries/holiday.js'
 import { auth } from './middleware/auth.js'
+import { readFileSync } from 'fs'
+import { fileURLToPath } from 'url'
+import { dirname, resolve } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+let landingHtml: string
+try {
+  landingHtml = readFileSync(resolve(__dirname, '..', 'public', 'index.html'), 'utf-8')
+} catch {
+  landingHtml = readFileSync(resolve(process.cwd(), 'public', 'index.html'), 'utf-8')
+}
 
 const app = new Hono().basePath('/api')
 
@@ -37,6 +50,13 @@ app.get(
   '/health',
   (c: Context) => {
     return c.json({ status: 'ok' })
+  },
+)
+
+app.get(
+  '/page',
+  (c: Context) => {
+    return c.html(landingHtml)
   },
 )
 
