@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio'
-import { MONTH_NAME } from '../constants/month'
+import { MONTH_NAME } from '../constants/month.js'
 
 export const crawler = async (year: string) => {
   const response = await fetch(`https://tanggalans.com/kalender-${year}`)

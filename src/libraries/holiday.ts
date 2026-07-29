@@ -1,5 +1,5 @@
-import { crawler } from './scraper'
-import { getHolidaysByYear, saveHolidays } from '../database'
+import { crawler } from './scraper.js'
+import { getHolidaysByYear, saveHolidays } from '../database.js'
 
 type Holiday = { name: string; date: string }
 
